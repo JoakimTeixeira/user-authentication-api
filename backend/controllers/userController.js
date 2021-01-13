@@ -108,6 +108,7 @@ const getUser = async (req, res, next) => {
   try {
     const { id } = req.params
 
+    // Verify if user exists
     const foundUser = await User.findById(id)
 
     if (!foundUser) {
@@ -124,8 +125,10 @@ const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params
 
+    // Delete user
     const deletedUser = await User.findByIdAndDelete(id)
 
+    // Verify if user was deleted
     if (!deletedUser) {
       return res.status(400).json({ msg: 'This user does not exists' })
     }
@@ -141,12 +144,14 @@ const updateUser = async (req, res, next) => {
     const { id } = req.params
     const updates = req.body
 
+    // Update user
     const newUser = await User.findOneAndUpdate(
       { _id: id },
       {
         $set: updates
       }, { new: true })
 
+    // Verify if user was updated
     if (!newUser) {
       return res.status(400).json({ msg: 'This user was not found' })
     }
