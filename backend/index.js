@@ -31,3 +31,7 @@ mongoose
   .catch((error) => {
     console.error('Error connecting to Mongo', error)
   })
+
+// Setup routes
+// Loads userRouter endpoint
+app.use('/users', require('./routes/userRouter'))
