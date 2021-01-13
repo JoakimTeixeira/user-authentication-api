@@ -1,5 +1,6 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const addUser = async (req, res, next) => {
   try {
@@ -63,4 +64,47 @@ const addUser = async (req, res, next) => {
   }
 }
 
-module.exports = addUser
+const loginUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body
+
+    // Validate fields
+    if (!email || !password) {
+      res.status(400).json({ msg: 'A field was not entered' })
+    }
+
+    // Verify if email exists
+    const user = await User.findOne({ email: email })
+
+    if (!user) {
+      return res.status(400).json({ msg: 'This email is not registered' })
+    }
+
+    // Validate password
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if (!isMatch) return res.status(400).json({ msg: 'Invalid password' })
+
+    // Create web token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+
+    // Respond with new user
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        telephone: user.telephone,
+        cpf: user.cpf
+      }
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+module.exports = {
+  addUser,
+  loginUser
+}
