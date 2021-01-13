@@ -136,9 +136,31 @@ const deleteUser = async (req, res, next) => {
   }
 }
 
+const updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const updates = req.body
+
+    const newUser = await User.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: updates
+      }, { new: true })
+
+    if (!newUser) {
+      return res.status(400).json({ msg: 'This user was not found' })
+    }
+
+    res.json(newUser)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
 module.exports = {
   addUser,
   loginUser,
   getUser,
-  deleteUser
+  deleteUser,
+  updateUser
 }
