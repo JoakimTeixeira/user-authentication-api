@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken')
 
 const addUser = async (req, res, next) => {
   try {
-    const { name, email, telephone, cpf, password, passwordCheck } = req.body
+    const { name, email, phoneNumber, cpf, password, passwordCheck } = req.body
 
     // Validate fields
-    if (!name || !email || !telephone || !cpf || !password || !passwordCheck) {
+    if (!name || !email || !phoneNumber || !cpf || !password || !passwordCheck) {
       return res.status(400).json({ msg: 'A field was not entered' })
     }
 
@@ -50,7 +50,7 @@ const addUser = async (req, res, next) => {
     const newUser = new User({
       name,
       email,
-      telephone,
+      phoneNumber,
       cpf,
       password: passwordHash
     })
@@ -95,7 +95,7 @@ const loginUser = async (req, res, next) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        telephone: user.telephone,
+        phoneNumber: user.phoneNumber,
         cpf: user.cpf
       }
     })
