@@ -120,8 +120,25 @@ const getUser = async (req, res, next) => {
   }
 }
 
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params
+
+    const deletedUser = await User.findByIdAndDelete(id)
+
+    if (!deletedUser) {
+      return res.status(400).json({ msg: 'This user does not exists' })
+    }
+
+    res.json(deletedUser)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
 module.exports = {
   addUser,
   loginUser,
-  getUser
+  getUser,
+  deleteUser
 }
