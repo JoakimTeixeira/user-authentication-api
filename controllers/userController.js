@@ -104,6 +104,30 @@ const loginUser = async (req, res, next) => {
   }
 }
 
+const verifyToken = async (req, res, next) => {
+  try {
+    // Gets token string
+    const token = req.header("x-auth-token");
+    if (!token) return res.json(false);
+
+    // If token string is valid, return user id
+    const isVerified = jwt.verify(token, process.env.JWT_SECRET);
+    if (!isVerified) return res.json(false);
+
+    // Verify if user exists
+    const user = await User.findById(isVerified.id);
+    if (!user) return res.json(false);
+
+    // If token is valid, return token and user id
+    return res.json({
+      token,
+      id: user.id
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 const getUser = async (req, res, next) => {
   try {
     const { id } = req.params
@@ -167,5 +191,6 @@ module.exports = {
   loginUser,
   getUser,
   deleteUser,
-  updateUser
+  updateUser,
+  verifyToken
 }
