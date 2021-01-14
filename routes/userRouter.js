@@ -8,6 +8,6 @@ router.post('/login', loginUser)
 router.post('/isTokenValid', verifyToken)
 router.get('/:id', auth, getUser)
 router.delete('/:id', auth, deleteUser)
-router.patch('/:id', auth, updateUser)
+router.put('/:id', auth, updateUser)
 
 module.exports = router
