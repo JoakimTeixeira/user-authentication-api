@@ -1,5 +1,5 @@
 # User Authentication API
-RESTful API for authentication client.
+REST API for user authentication client.
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
