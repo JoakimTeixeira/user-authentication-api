@@ -111,7 +111,6 @@ const getUser = async (req, res, next) => {
     // Verify if user exists
     const foundUser = await User.findById(id)
 
-    console.log(foundUser)
     if (!foundUser) {
       return res.status(400).json({ msg: 'This user does not exists' })
     }
@@ -163,10 +162,39 @@ const updateUser = async (req, res, next) => {
   }
 }
 
+const getToken = async (req, res, next) => {
+  try {
+    const { token } = req.params
+    
+    // Verify token
+    if (!token) return res.status(400).json({ msg: 'Token does not exist' });
+
+    // If token string is valid, return user id
+    const isVerified = jwt.verify(token, process.env.JWT_SECRET);
+    if (!isVerified) return res.status(400).json({ msg: 'Token is invalid' })
+
+    // Verify if user exists
+    const foundUser = await User.findById(isVerified.id)
+
+    if (!foundUser) {
+      return res.status(400).json({ msg: 'The user was not found' })
+    }
+
+     // If token is valid, return token and user id
+     return res.json({
+      token,
+      id: foundUser.id
+    });    
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
 module.exports = {
   addUser,
   loginUser,
   getUser,
   deleteUser,
   updateUser,
+  getToken
 }
