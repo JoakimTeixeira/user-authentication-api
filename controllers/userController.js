@@ -11,6 +11,10 @@ const addUser = async (req, res, next) => {
       return res.status(400).json({ msg: 'A field was not entered' })
     }
 
+    if (!email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
+      return res.status(400).json({ msg: 'Email format is invalid' })
+    }
+
     if (cpf.length < 11 || cpf.length > 11) {
       return res
         .status(400)
@@ -165,12 +169,12 @@ const updateUser = async (req, res, next) => {
 const getToken = async (req, res, next) => {
   try {
     const { token } = req.params
-    
+
     // Verify token
-    if (!token) return res.status(400).json({ msg: 'Token does not exist' });
+    if (!token) return res.status(400).json({ msg: 'Token does not exist' })
 
     // If token string is valid, return user id
-    const isVerified = jwt.verify(token, process.env.JWT_SECRET);
+    const isVerified = jwt.verify(token, process.env.JWT_SECRET)
     if (!isVerified) return res.status(400).json({ msg: 'Token is invalid' })
 
     // Verify if user exists
@@ -180,11 +184,11 @@ const getToken = async (req, res, next) => {
       return res.status(400).json({ msg: 'The user was not found' })
     }
 
-     // If token is valid, return token and user id
-     return res.json({
+    // If token is valid, return token and user id
+    return res.json({
       token,
       id: foundUser.id
-    });    
+    })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
