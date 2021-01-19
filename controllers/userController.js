@@ -29,7 +29,7 @@ const addUser = async (req, res, next) => {
     }
 
     if (password !== passwordCheck) {
-      return res.status(400).json({ msg: 'The password must be the same' })
+      return res.status(400).json({ msg: 'The same password must be entered twice' })
     }
 
     // Verify if email exists
