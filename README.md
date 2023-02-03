@@ -13,3 +13,6 @@ Then, run the following commands:
     npm run start:dev
     
 After that, access the URL ```localhost:3001``` in the browser.
+
+## Frontend Client
+https://github.com/JoakimTeixeira/user-authentication-client
