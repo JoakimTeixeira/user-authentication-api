@@ -5,7 +5,7 @@ REST API for user authentication client.
 
 ## Running the Project
 
-To get started, fork the repository and rename the file ".env-example" to ".env" and fill in information about your mongoDB cluster.
+To get started, fork the repository, clone it, rename the file ".env-example" to ".env" and fill in information about your MongoDB cluster.
 
 Then, run the following commands:
 
